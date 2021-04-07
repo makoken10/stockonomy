@@ -32,7 +32,7 @@ auth.set_access_token(config.TWITTER_ACCESS_TOKEN, config.TWITTER_ACCESS_TOKEN_S
 api = tweepy.API(auth)
 
 #sidebar menu
-option = st.sidebar.selectbox("Which Dashboard?", ('Overview','Fundamentals','Technicals','Chart','Twitter','StockTwits','Balance Sheet','Income Statement','Cash Flow'), 0)
+option = st.sidebar.selectbox("Which Dashboard?", ('Overview','Fundamentals','Technicals','Chart','Twitter','StockTwits'), 0)
 
 #sidebar output = $XXXX
 ticker = st.sidebar.text_input("Symbol", value='SQ', max_chars=5)
