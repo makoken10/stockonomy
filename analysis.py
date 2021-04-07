@@ -9,7 +9,6 @@ import plotly as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import numpy as np
-import talib
 import requests
 import tweepy
 import config 
