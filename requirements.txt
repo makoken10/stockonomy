@@ -1,6 +1,6 @@
 yfinance==0.1.55
 plotly==4.14.3
-talib==0.4.19
+TA_Lib==0.4.19
 mplfinance==0.12.7a10
 finplot==1.6
 requests==2.25.1
