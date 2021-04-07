@@ -126,37 +126,6 @@ if option == 'Fundamentals':
 
     st.markdown('Price / Earnings-to-Growth:')
 
-    # get earnings history for AAPL
-    earnings = si.get_earnings_history(ticker)
-    st.table(earnings)
-
-    quote_table = si.get_quote_table(ticker, dict_result=False)
-    st.table(quote_table)
-
-    
-    fundDF = pd.DataFrame.from_dict(fundInfo, orient='index')
-    fundDF = fundDF.rename(columns={0: 'Value'})
-    st.subheader('Fundamental Info') 
-    st.table(fundDF)
-    
-    marketInfo = {
-            "Volume": info['volume'],
-            "Average Volume": info['averageVolume'],
-            "Market Cap ($B)": info["marketCap"]/1000000000,
-            "Float Shares": info['floatShares'],
-            "Regular Market Price (USD)": info['regularMarketPrice'],
-            'Bid Size': info['bidSize'],
-            'Ask Size': info['askSize'],
-            "Share Short": info['sharesShort'],
-            'Short Ratio': info['shortRatio'],
-            'Share Outstanding': info['sharesOutstanding']
-    
-        }
-    marketDF = pd.DataFrame.from_dict(marketInfo, orient='index')
-    marketDF = marketDF.rename(columns={0: 'Value'})
-    st.subheader('Market Info') 
-    st.table(marketDF)
-
 if option == 'Technicals':
     
     st.header(ticker)
