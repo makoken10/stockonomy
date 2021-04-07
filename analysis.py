@@ -162,6 +162,7 @@ if option == 'Overview':
     st.subheader(info['regularMarketPrice'])
     st.markdown('Analyst Target:')
     st.markdown(quote['1y Target Est'])
+    st.markdown('Market Cap:')
     st.markdown(info['marketCap']/1000000000) 
     st.markdown('** Sector **: ' + info['sector']) 
     st.markdown('** Industry **: ' + info['industry'])
