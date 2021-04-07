@@ -133,24 +133,6 @@ if option == 'Fundamentals':
     quote_table = si.get_quote_table(ticker, dict_result=False)
     st.table(quote_table)
 
-        
-    fundInfo = {
-            'Enterprise Value (USD)': info['enterpriseValue'],
-            'Enterprise To Revenue Ratio': info['enterpriseToRevenue'],
-            'Enterprise To Ebitda Ratio': info['enterpriseToEbitda'],
-            'Net Income (USD)': info['netIncomeToCommon'],
-            'Profit Margin Ratio': info['profitMargins'],
-            'Forward PE Ratio': info['forwardPE'],
-            'PEG Ratio': info['pegRatio'],
-            'Price to Book Ratio': info['priceToBook'],
-            'Forward EPS (USD)': info['forwardEps'],
-            'Beta ': info['beta'],
-            'Book Value (USD)': info['bookValue'],
-            'Dividend Rate (%)': info['dividendRate'], 
-            'Dividend Yield (%)': info['dividendYield'],
-            'Five year Avg Dividend Yield (%)': info['fiveYearAvgDividendYield'],
-            'Payout Ratio': info['payoutRatio']
-        }
     
     fundDF = pd.DataFrame.from_dict(fundInfo, orient='index')
     fundDF = fundDF.rename(columns={0: 'Value'})
