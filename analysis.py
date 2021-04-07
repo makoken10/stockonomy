@@ -26,50 +26,6 @@ import altair as alt
 import cufflinks as cf
 import finplot as fplt
 import streamlit.components.v1 as components
-import os
-import sys
-from bokeh.plotting import figure
-
-
-# check if the library folder already exists, to avoid building everytime you load the pahe
-if not os.path.isdir("/tmp/ta-lib"):
-
-    # Download ta-lib to disk
-    with open("/tmp/ta-lib-0.4.0-src.tar.gz", "wb") as file:
-        response = requests.get(
-            "http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz"
-        )
-        file.write(response.content)
-    # get our current dir, to configure it back again. Just house keeping
-    default_cwd = os.getcwd()
-    os.chdir("/tmp")
-    # untar
-    os.system("tar -zxvf ta-lib-0.4.0-src.tar.gz")
-    os.chdir("/tmp/ta-lib")
-    os.system("ls -la /app/equity/")
-    # build
-    os.system("./configure --prefix=/home/appuser")
-    os.system("make")
-    # install
-    os.system("make install")
-    # bokeh sample data
-    os.system("bokeh sampledata")
-    # install python package
-    os.system(
-        'pip3 install --global-option=build_ext --global-option="-L/home/appuser/lib/" --global-option="-I/home/appuser/include/" ta-lib'
-    )
-    # back to the cwd
-    os.chdir(default_cwd)
-    print(os.getcwd())
-    sys.stdout.flush()
-
-# add the library to our current environment
-from ctypes import *
-
-lib = CDLL("/home/appuser/lib/libta_lib.so.0")
-# import library
-import talib
-
 
 auth = tweepy.OAuthHandler(config.TWITTER_CONSUMER_KEY, config.TWITTER_CONSUMER_SECRET)
 auth.set_access_token(config.TWITTER_ACCESS_TOKEN, config.TWITTER_ACCESS_TOKEN_SECRET)
@@ -125,6 +81,55 @@ if option == 'Fundamentals':
     st.markdown('Forward P/E:')
 
     st.markdown('Price / Earnings-to-Growth:')
+
+    # get earnings history for AAPL
+    earnings = si.get_earnings_history(ticker)
+    st.table(earnings)
+
+    quote_table = si.get_quote_table(ticker, dict_result=False)
+    st.table(quote_table)
+
+        
+    fundInfo = {
+            'Enterprise Value (USD)': info['enterpriseValue'],
+            'Enterprise To Revenue Ratio': info['enterpriseToRevenue'],
+            'Enterprise To Ebitda Ratio': info['enterpriseToEbitda'],
+            'Net Income (USD)': info['netIncomeToCommon'],
+            'Profit Margin Ratio': info['profitMargins'],
+            'Forward PE Ratio': info['forwardPE'],
+            'PEG Ratio': info['pegRatio'],
+            'Price to Book Ratio': info['priceToBook'],
+            'Forward EPS (USD)': info['forwardEps'],
+            'Beta ': info['beta'],
+            'Book Value (USD)': info['bookValue'],
+            'Dividend Rate (%)': info['dividendRate'], 
+            'Dividend Yield (%)': info['dividendYield'],
+            'Five year Avg Dividend Yield (%)': info['fiveYearAvgDividendYield'],
+            'Payout Ratio': info['payoutRatio']
+        }
+    
+    fundDF = pd.DataFrame.from_dict(fundInfo, orient='index')
+    fundDF = fundDF.rename(columns={0: 'Value'})
+    st.subheader('Fundamental Info') 
+    st.table(fundDF)
+    
+    marketInfo = {
+            "Volume": info['volume'],
+            "Average Volume": info['averageVolume'],
+            "Market Cap ($B)": info["marketCap"]/1000000000,
+            "Float Shares": info['floatShares'],
+            "Regular Market Price (USD)": info['regularMarketPrice'],
+            'Bid Size': info['bidSize'],
+            'Ask Size': info['askSize'],
+            "Share Short": info['sharesShort'],
+            'Short Ratio': info['shortRatio'],
+            'Share Outstanding': info['sharesOutstanding']
+    
+        }
+    marketDF = pd.DataFrame.from_dict(marketInfo, orient='index')
+    marketDF = marketDF.rename(columns={0: 'Value'})
+    st.subheader('Market Info') 
+    st.table(marketDF)
 
 if option == 'Technicals':
     
